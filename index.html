@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Old Chapel | Feniton, Devon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #FAF8F5;
+      --warm-white: #FFFFFF;
+      --stone: #E8E2DA;
+      --stone-light: #F2EDE7;
+      --charcoal: #2C2C2C;
+      --header-bg: #433e38;
+      --text-primary: #1A1A1A;
+      --text-secondary: #6B6560;
+      --text-light: #9A9590;
+      --gold: #C5A572;
+      --gold-hover: #B8944F;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Outfit', system-ui, sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: var(--sans);
+      color: var(--text-primary);
+      background: var(--cream);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      padding: 1.5rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      transition: all 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(67, 62, 56, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 1rem 3rem;
+    }
+    .nav-logo {
+      font-family: var(--serif); font-size: 1.4rem; font-weight: 400;
+      letter-spacing: 0.08em; color: white; text-transform: uppercase;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-family: var(--sans); font-size: 0.8rem; font-weight: 400;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(255,255,255,0.85); text-decoration: none; transition: color 0.3s ease;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-book-btn {
+      font-family: var(--sans); font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      padding: 0.7rem 1.8rem; border: 1px solid rgba(255,255,255,0.5);
+      color: white; background: transparent; cursor: pointer;
+      transition: all 0.3s ease; text-decoration: none;
+    }
+    .nav-book-btn:hover { background: var(--gold); border-color: var(--gold); color: white; }
+
+    /* HERO */
+    .hero {
+      position: relative; height: 100vh; min-height: 700px;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+    }
+    .hero-video-container { position: absolute; inset: 0; z-index: 0; }
+    .hero-video-container video, .hero-video-placeholder {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .hero-video-placeholder {
+      background: linear-gradient(145deg, #3a3632 0%, #433e38 40%, #4b443c 70%, #3a3632 100%);
+      position: relative;
+    }
+    .hero-video-placeholder::after {
+      content: "Replace this div with your video element";
+      position: absolute; bottom: 2rem; right: 2rem;
+      font-family: var(--sans); font-size: 0.75rem; letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.35); text-transform: uppercase;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.15) 70%, rgba(0,0,0,0.45) 100%);
+    }
+    .hero-content {
+      position: relative; z-index: 2; text-align: center; color: white;
+      max-width: 700px; padding: 0 2rem;
+    }
+    .hero-eyebrow {
+      font-family: var(--sans); font-size: 0.72rem; font-weight: 400;
+      letter-spacing: 0.35em; text-transform: uppercase;
+      color: rgba(255,255,255,0.7); margin-bottom: 1.5rem;
+      opacity: 0; animation: fadeUp 1s ease 0.3s forwards;
+    }
+    .hero-title {
+      font-family: var(--serif); font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 300; line-height: 1.05; letter-spacing: -0.01em;
+      margin-bottom: 1rem; opacity: 0; animation: fadeUp 1s ease 0.5s forwards;
+    }
+    .hero-subtitle {
+      font-family: var(--serif); font-size: 1.25rem; font-weight: 300;
+      font-style: italic; color: rgba(255,255,255,0.75);
+      margin-bottom: 2.5rem; opacity: 0; animation: fadeUp 1s ease 0.7s forwards;
+    }
+    .hero-cta {
+      display: inline-block; font-family: var(--sans); font-size: 0.8rem;
+      font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 1rem 3rem; background: var(--gold); color: white;
+      text-decoration: none; transition: all 0.3s ease;
+      opacity: 0; animation: fadeUp 1s ease 0.9s forwards;
+    }
+    .hero-cta:hover {
+      background: var(--gold-hover); transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(197, 165, 114, 0.3);
+    }
+    .scroll-indicator {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      opacity: 0; animation: fadeIn 1s ease 1.5s forwards;
+    }
+    .scroll-indicator span {
+      font-family: var(--sans); font-size: 0.65rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: rgba(255,255,255,0.5);
+    }
+    .scroll-line {
+      width: 1px; height: 40px; background: rgba(255,255,255,0.3);
+      position: relative; overflow: hidden;
+    }
+    .scroll-line::after {
+      content: ""; position: absolute; top: -100%; left: 0;
+      width: 100%; height: 100%; background: rgba(255,255,255,0.8);
+      animation: scrollDown 2s ease infinite;
+    }
+
+    /* REVIEWS */
+    .reviews-section {
+      padding: 4rem 0; background: var(--warm-white); overflow: hidden;
+      border-top: 1px solid var(--stone); border-bottom: 1px solid var(--stone);
+    }
+    .reviews-label {
+      text-align: center; font-family: var(--sans); font-size: 0.7rem;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--text-light); margin-bottom: 2rem;
+    }
+    .marquee-container { position: relative; }
+    .marquee-container::before, .marquee-container::after {
+      content: ""; position: absolute; top: 0; bottom: 0; width: 120px;
+      z-index: 2; pointer-events: none;
+    }
+    .marquee-container::before { left: 0; background: linear-gradient(to right, var(--warm-white), transparent); }
+    .marquee-container::after { right: 0; background: linear-gradient(to left, var(--warm-white), transparent); }
+    .marquee-track {
+      display: flex; gap: 3rem; animation: marquee 35s linear infinite; width: max-content;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+    .review-card {
+      flex-shrink: 0; width: 380px; padding: 2rem 2.5rem;
+      background: var(--cream); border: 1px solid var(--stone);
+    }
+    .review-stars { color: var(--gold); font-size: 0.85rem; letter-spacing: 0.15em; margin-bottom: 1rem; }
+    .review-text {
+      font-family: var(--serif); font-size: 1.1rem; font-weight: 400;
+      font-style: italic; line-height: 1.65; color: var(--text-primary); margin-bottom: 1.2rem;
+    }
+    .review-author {
+      font-family: var(--sans); font-size: 0.75rem; font-weight: 400;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light);
+    }
+
+    /* SCROLL DIVIDER */
+    .scroll-divider {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 1.5rem 0; background: var(--cream);
+    }
+    .scroll-divider .scroll-line {
+      width: 2px; height: 50px; background: var(--text-light);
+      position: relative; overflow: hidden;
+    }
+    .scroll-divider .scroll-line::after {
+      content: ""; position: absolute; top: -100%; left: 0;
+      width: 100%; height: 100%; background: var(--gold);
+      animation: scrollDown 2.5s ease infinite;
+    }
+
+    /* GALLERY */
+    .gallery-section { padding: 4rem 0 5rem; background: var(--cream); }
+    .section-header { text-align: center; max-width: 600px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .section-eyebrow {
+      font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300; line-height: 1.15; color: var(--text-primary);
+    }
+    .gallery-slider { position: relative; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .gallery-viewport { overflow: hidden; }
+    .gallery-track { display: flex; transition: transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1); }
+    .gallery-slide { flex: 0 0 100%; aspect-ratio: 16 / 10; position: relative; overflow: hidden; }
+    .gallery-slide img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    .gallery-slide:hover img { transform: scale(1.02); }
+    .gallery-slide-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 4rem 2rem 1.5rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.55), transparent);
+      color: white; font-family: var(--serif); font-size: 1.15rem;
+      font-style: italic; letter-spacing: 0.02em;
+      opacity: 0; transition: opacity 0.4s ease;
+    }
+    .gallery-slide:hover .gallery-slide-caption { opacity: 1; }
+    .gallery-counter {
+      font-family: var(--sans); font-size: 0.75rem; letter-spacing: 0.1em;
+      color: var(--text-light); text-align: center; margin-bottom: 1rem;
+    }
+    .gallery-controls {
+      display: flex; align-items: center; justify-content: center;
+      gap: 2rem; margin-top: 2rem;
+    }
+    .gallery-btn {
+      width: 48px; height: 48px; border: 1px solid var(--stone);
+      background: var(--warm-white); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s ease; font-size: 1.1rem; color: var(--text-secondary);
+    }
+    .gallery-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .gallery-dots { display: flex; gap: 0.5rem; }
+    .gallery-dot {
+      width: 8px; height: 2px; background: var(--stone);
+      border: none; cursor: pointer; transition: all 0.3s ease; padding: 0;
+    }
+    .gallery-dot.active { width: 32px; background: var(--gold); }
+
+    /* VIDEO PILL */
+    .video-cta-section { padding: 2rem 0 4rem; background: var(--cream); text-align: center; }
+    .video-pill {
+      display: inline-flex; align-items: center; gap: 0.75rem;
+      font-family: var(--sans); font-size: 0.8rem; font-weight: 400;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-secondary); text-decoration: none;
+      padding: 0.85rem 2.2rem; border: 2px solid var(--text-light);
+      border-radius: 100px; transition: all 0.3s ease; background: var(--warm-white);
+    }
+    .video-pill:hover {
+      border-color: var(--gold); color: var(--gold);
+      box-shadow: 0 4px 20px rgba(197, 165, 114, 0.15); transform: translateY(-1px);
+    }
+    .video-pill-icon {
+      width: 28px; height: 28px; border-radius: 50%; background: var(--gold);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .video-pill-icon svg { width: 10px; height: 10px; fill: white; margin-left: 1px; }
+
+    /* BOOKING */
+    
+
+    /* BOOKING CTA */
+    .booking-section {
+      padding: 6rem 2rem; background: var(--header-bg); text-align: center;
+    }
+    .booking-cta-inner { max-width: 600px; margin: 0 auto; }
+    .booking-eyebrow {
+      font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;
+    }
+    .booking-title {
+      font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300; line-height: 1.15; color: white; margin-bottom: 1rem;
+    }
+    .booking-subtitle {
+      font-family: var(--sans); font-size: 0.95rem; line-height: 1.6;
+      color: rgba(255,255,255,0.6); margin-bottom: 2.5rem;
+    }
+    .booking-btn {
+      display: inline-block; font-family: var(--sans); font-size: 0.85rem;
+      font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase;
+      padding: 1.1rem 3rem; background: var(--gold); color: white;
+      text-decoration: none; border-radius: 4px; transition: all 0.3s ease;
+    }
+    .booking-btn:hover {
+      background: var(--gold-hover); transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(197, 165, 114, 0.35);
+    }
+
+    /* FAQ */
+    .faq-section { padding: 7rem 0 4rem; background: var(--cream); }
+    .faq-container { max-width: 750px; margin: 0 auto; padding: 0 2rem; }
+    .faq-item { border-bottom: 1px solid var(--stone); }
+    .faq-question {
+      width: 100%; padding: 1.5rem 0; background: none; border: none; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--serif); font-size: 1.15rem; font-weight: 400;
+      color: var(--text-primary); text-align: left; transition: color 0.3s ease;
+    }
+    .faq-question:hover { color: var(--gold); }
+    .faq-icon {
+      font-size: 1.2rem; color: var(--text-light); transition: transform 0.3s ease;
+      flex-shrink: 0; margin-left: 1rem;
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; }
+    .faq-item.open .faq-answer { max-height: 300px; padding-bottom: 1.5rem; }
+    .faq-answer p { font-family: var(--sans); font-size: 0.9rem; line-height: 1.7; color: var(--text-secondary); }
+
+    /* MAP */
+    .map-section { padding: 4rem 0 5rem; background: var(--warm-white); }
+    .map-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .map-embed { width: 100%; height: 450px; border: 1px solid var(--stone); }
+    .map-embed iframe { width: 100%; height: 100%; border: 0; }
+
+    /* FOOTER */
+    footer { padding: 4rem 3rem 2rem; background: var(--charcoal); color: rgba(255,255,255,0.5); }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto; display: flex;
+      justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 2rem;
+    }
+    .footer-brand {
+      font-family: var(--serif); font-size: 1.3rem; font-weight: 400;
+      letter-spacing: 0.06em; color: rgba(255,255,255,0.8);
+      text-transform: uppercase; margin-bottom: 0.5rem;
+    }
+    .footer-address { font-family: var(--sans); font-size: 0.8rem; line-height: 1.7; color: rgba(255,255,255,0.4); }
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a {
+      font-family: var(--sans); font-size: 0.75rem; letter-spacing: 0.08em;
+      text-transform: uppercase; color: rgba(255,255,255,0.4);
+      text-decoration: none; transition: color 0.3s ease;
+    }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-bottom {
+      max-width: 1200px; margin: 3rem auto 0; padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-family: var(--sans); font-size: 0.7rem; color: rgba(255,255,255,0.25); text-align: center;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes scrollDown { 0% { top: -100%; } 100% { top: 100%; } }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      nav.scrolled { padding: 0.8rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero-content { padding: 0 1.5rem; }
+      .review-card { width: 300px; }
+      .footer-inner { flex-direction: column; }
+      .gallery-slide { aspect-ratio: 4 / 3; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar">
+    <div class="nav-logo">The Old Chapel</div>
+    <ul class="nav-links">
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#booking">Availability</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#location">Location</a></li>
+    </ul>
+    <a href="#booking" class="nav-book-btn">Book Now</a>
+  </nav>
+
+  <section class="hero" id="home">
+    <div class="hero-video-container">
+      <video src="hero-video.mp4" autoplay muted loop playsinline></video>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">A unique stay in the heart of Devon</p>
+      <h1 class="hero-title">The Old Chapel</h1>
+      <p class="hero-subtitle">A beautifully restored Gothic chapel in Feniton, Devon</p>
+      <a href="#booking" class="hero-cta">Book Your Stay</a>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <section class="reviews-section">
+    <p class="reviews-label">What Our Guests Say</p>
+    <div class="marquee-container">
+      <div class="marquee-track">
+        <div class="review-card"><div class="review-stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div><p class="review-text">"Absolutely stunning property. The chapel is even more beautiful in person &#8212; we didn't want to leave."</p><p class="review-author">Sarah &amp; James &#8212; London</p></div>
+        <div class="review-card"><div class="review-stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div><p class="review-text">"A truly unique place to stay. Incredibly peaceful, beautifully decorated, and the perfect Devon escape."</p><p class="review-author">Mark T. &#8212; Bristol</p></div>
+        <div class="review-card"><div class="review-stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div><p class="review-text">"We've stayed in many holiday lets and this is genuinely one of the best. Every detail has been thought of."</p><p class="review-author">Emma &amp; Chris &#8212; Bath</p></div>
+        <div class="review-card"><div class="review-stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div><p class="review-text">"The perfect romantic getaway. Waking up in a Gothic chapel surrounded by Devon countryside was magical."</p><p class="review-author">Rachel D. &#8212; Manchester</p></div>
+        <div class="review-card"><div class="review-stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div><p class="review-text">"Spotlessly clean, cosy, and full of character. The hosts were incredibly welcoming and responsive."</p><p class="review-author">Tom &amp; Lucy &#8212; Oxford</p></div>
+        <div class="review-card"><div class="review-stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div><p class="review-text">"An unforgettable stay. We loved the original features mixed with modern comforts. Highly recommended."</p><p class="review-author">David H. &#8212; Edinburgh</p></div>
+        <div class="review-card"><div class="review-stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div><p class="review-text">"Absolutely stunning property. The chapel is even more beautiful in person &#8212; we didn't want to leave."</p><p class="review-author">Sarah &amp; James &#8212; London</p></div>
+        <div class="review-card"><div class="review-stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div><p class="review-text">"A truly unique place to stay. Incredibly peaceful, beautifully decorated, and the perfect Devon escape."</p><p class="review-author">Mark T. &#8212; Bristol</p></div>
+        <div class="review-card"><div class="review-stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div><p class="review-text">"We've stayed in many holiday lets and this is genuinely one of the best. Every detail has been thought of."</p><p class="review-author">Emma &amp; Chris &#8212; Bath</p></div>
+        <div class="review-card"><div class="review-stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div><p class="review-text">"The perfect romantic getaway. Waking up in a Gothic chapel surrounded by Devon countryside was magical."</p><p class="review-author">Rachel D. &#8212; Manchester</p></div>
+        <div class="review-card"><div class="review-stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div><p class="review-text">"Spotlessly clean, cosy, and full of character. The hosts were incredibly welcoming and responsive."</p><p class="review-author">Tom &amp; Lucy &#8212; Oxford</p></div>
+        <div class="review-card"><div class="review-stars">&#9733; &#9733; &#9733; &#9733; &#9733;</div><p class="review-text">"An unforgettable stay. We loved the original features mixed with modern comforts. Highly recommended."</p><p class="review-author">David H. &#8212; Edinburgh</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="scroll-divider"><div class="scroll-line"></div></div>
+
+  <section class="gallery-section" id="gallery">
+    <div class="section-header">
+      <p class="section-eyebrow">The Property</p>
+      <h2 class="section-title">Step Inside</h2>
+    </div>
+    <div class="gallery-slider">
+      <div class="gallery-counter" id="galleryCounter">1 of 23</div>
+      <div class="gallery-viewport">
+<div class="gallery-track" id="galleryTrack">
+
+          <!-- 1 -->
+          <div class="gallery-slide">
+            <img src="images/01-the-old-chapel-exterior-with-gothic-arch.jpg" alt="The Old Chapel exterior with Gothic arched door" loading="lazy">
+            <div class="gallery-slide-caption">1 — The Old Chapel, a beautifully restored Gothic chapel</div>
+          </div>
+
+          <!-- 2 -->
+          <div class="gallery-slide">
+            <img src="images/02-open-plan-living-and-dining-space-with-p.jpg" alt="Open-plan living and dining space with piano and Gothic doors" loading="lazy">
+            <div class="gallery-slide-caption">2 — Open-plan living with original Gothic arched doors</div>
+          </div>
+
+          <!-- 3 -->
+          <div class="gallery-slide">
+            <img src="images/03-cosy-living-room-with-wood-burner-and-oa.jpg" alt="Cosy living room with wood burner and oak floors" loading="lazy">
+            <div class="gallery-slide-caption">3 — Cosy living room with log burner and oak flooring</div>
+          </div>
+
+          <!-- 4 -->
+          <div class="gallery-slide">
+            <img src="images/04-corner-sofa-with-wood-burner-and-stairca.jpg" alt="Corner sofa with wood burner and staircase" loading="lazy">
+            <div class="gallery-slide-caption">4 — Relax by the fire after a day exploring Devon</div>
+          </div>
+
+          <!-- 5 -->
+          <div class="gallery-slide">
+            <img src="images/05-log-burner-close-up-with-stacked-wood.jpg" alt="Log burner close-up with stacked wood" loading="lazy">
+            <div class="gallery-slide-caption">5 — Contemporary wood burner with logs provided</div>
+          </div>
+
+          <!-- 6 -->
+          <div class="gallery-slide">
+            <img src="images/06-kitchen-with-breakfast-bar-and-pendant-l.jpg" alt="Kitchen with breakfast bar and pendant lights" loading="lazy">
+            <div class="gallery-slide-caption">6 — Fully equipped kitchen with breakfast bar</div>
+          </div>
+
+          <!-- 7 -->
+          <div class="gallery-slide">
+            <img src="images/07-kitchen-detail-with-espresso-machine-and.jpg" alt="Kitchen detail with espresso machine and cookbooks" loading="lazy">
+            <div class="gallery-slide-caption">7 — Barista-quality coffee machine and curated cookbooks</div>
+          </div>
+
+          <!-- 8 -->
+          <div class="gallery-slide">
+            <img src="images/08-kitchen-wider-angle-with-gothic-window-r.jpg" alt="Kitchen wider angle with Gothic window reflections" loading="lazy">
+            <div class="gallery-slide-caption">8 — Kitchen with natural light and arched window reflections</div>
+          </div>
+
+          <!-- 9 -->
+          <div class="gallery-slide">
+            <img src="images/09-kitchen-to-dining-room-wide-view-with-la.jpg" alt="Kitchen to dining room wide view with lantern roof" loading="lazy">
+            <div class="gallery-slide-caption">9 — From the kitchen through to the dining space</div>
+          </div>
+
+          <!-- 10 -->
+          <div class="gallery-slide">
+            <img src="images/10-dining-area-flooded-with-light-from-lant.jpg" alt="Dining area flooded with light from lantern roof" loading="lazy">
+            <div class="gallery-slide-caption">10 — Dining beneath the stunning oak-framed lantern roof</div>
+          </div>
+
+          <!-- 11 -->
+          <div class="gallery-slide">
+            <img src="images/11-dining-table-with-gothic-doors-leading-t.jpg" alt="Dining table with Gothic doors leading to garden" loading="lazy">
+            <div class="gallery-slide-caption">11 — Dine with views through Gothic doors to the garden</div>
+          </div>
+
+          <!-- 12 -->
+          <div class="gallery-slide">
+            <img src="images/12-oak-framed-lantern-skylight-close-up.jpg" alt="Oak-framed lantern skylight close-up" loading="lazy">
+            <div class="gallery-slide-caption">12 — The oak-framed lantern skylight flooding the space with light</div>
+          </div>
+
+          <!-- 13 -->
+          <div class="gallery-slide">
+            <img src="images/13-oak-and-iron-staircase.jpg" alt="Oak and iron staircase" loading="lazy">
+            <div class="gallery-slide-caption">13 — Handcrafted oak and iron staircase to the first floor</div>
+          </div>
+
+          <!-- 14 -->
+          <div class="gallery-slide">
+            <img src="images/14-master-bedroom-with-exposed-chapel-beams.jpg" alt="Master bedroom with exposed chapel beams" loading="lazy">
+            <div class="gallery-slide-caption">14 — Master bedroom with original chapel roof beams</div>
+          </div>
+
+          <!-- 15 -->
+          <div class="gallery-slide">
+            <img src="images/15-master-bedroom-wider-angle.jpg" alt="Master bedroom wider angle" loading="lazy">
+            <div class="gallery-slide-caption">15 — Spacious master bedroom with brass reading lamps</div>
+          </div>
+
+          <!-- 16 -->
+          <div class="gallery-slide">
+            <img src="images/16-second-bedroom-with-gothic-arched-window.jpg" alt="Second bedroom with Gothic arched window" loading="lazy">
+            <div class="gallery-slide-caption">16 — Wake up to light through the Gothic arched window</div>
+          </div>
+
+          <!-- 17 -->
+          <div class="gallery-slide">
+            <img src="images/17-second-bedroom-wider-view.jpg" alt="Second bedroom wider view" loading="lazy">
+            <div class="gallery-slide-caption">17 — Second bedroom with original arched window</div>
+          </div>
+
+          <!-- 18 -->
+          <div class="gallery-slide">
+            <img src="images/18-second-bedroom-alternative-angle.jpg" alt="Second bedroom alternative angle" loading="lazy">
+            <div class="gallery-slide-caption">18 — Second bedroom, beautifully styled and cosy</div>
+          </div>
+
+          <!-- 19 -->
+          <div class="gallery-slide">
+            <img src="images/19-bathroom-vanity-with-round-mirror-and-ru.jpg" alt="Bathroom vanity with round mirror and rustic cabinet" loading="lazy">
+            <div class="gallery-slide-caption">19 — Rustic oak vanity with backlit mirror</div>
+          </div>
+
+          <!-- 20 -->
+          <div class="gallery-slide">
+            <img src="images/20-freestanding-bath-with-black-fixtures.jpg" alt="Freestanding bath with black fixtures" loading="lazy">
+            <div class="gallery-slide-caption">20 — Freestanding bath with premium black brassware</div>
+          </div>
+
+          <!-- 21 -->
+          <div class="gallery-slide">
+            <img src="images/21-luxury-toiletries-on-bath-edge.jpg" alt="Luxury toiletries on bath edge" loading="lazy">
+            <div class="gallery-slide-caption">21 — Premium toiletries provided for every stay</div>
+          </div>
+
+          <!-- 22 -->
+          <div class="gallery-slide">
+            <img src="images/22-private-patio-with-outdoor-sofa.jpg" alt="Private patio with outdoor sofa" loading="lazy">
+            <div class="gallery-slide-caption">22 — Private patio with outdoor lounge seating</div>
+          </div>
+
+          <!-- 23 -->
+          <div class="gallery-slide">
+            <img src="images/23-garden-view-through-gothic-arched-doors.jpg" alt="Garden view through Gothic arched doors" loading="lazy">
+            <div class="gallery-slide-caption">23 — Step through the arched doors to your private garden</div>
+          </div>
+
+        
+      </div>
+      <div class="gallery-controls">
+        <button class="gallery-btn" id="prevBtn" aria-label="Previous slide">&#8592;</button>
+        <div class="gallery-dots" id="galleryDots"></div>
+        <button class="gallery-btn" id="nextBtn" aria-label="Next slide">&#8594;</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="video-cta-section">
+    <a href="https://www.youtube.com/watch?v=NvChYBXwo3U" target="_blank" rel="noopener" class="video-pill">
+      <span class="video-pill-icon">
+        <svg viewBox="0 0 12 14" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 12,7 0,14"/></svg>
+      </span>
+      Watch the Full Tour
+    </a>
+  </div>
+
+  <section class="booking-section" id="booking">
+    <div class="booking-cta-inner">
+      <p class="booking-eyebrow">Ready to stay?</p>
+      <h2 class="booking-title">Book Your Stay</h2>
+      <p class="booking-subtitle">Check availability, choose your dates, and book directly &#8212; no booking fees.</p>
+      <a class="booking-btn" href="https://theoldchapel.guestybookings.com" target="_blank" rel="noopener">Check Availability &amp; Book</a>
+    </div>
+  </section>
+
+  <section class="faq-section" id="faq">
+    <div class="section-header">
+      <p class="section-eyebrow">Information</p>
+      <h2 class="section-title">Frequently Asked</h2>
+    </div>
+    <div class="faq-container">
+      <div class="faq-item">
+        <button class="faq-question">What are the check-in and check-out times?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>Check-in is from 3:00 PM and check-out is by 11:00 AM. Early check-in or late check-out may be available on request &#8212; just get in touch and we'll do our best to accommodate.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Is the chapel suitable for children?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>Absolutely. The chapel is family-friendly with a private garden. We can provide a travel cot on request. The nearby village and Devon countryside offer plenty for families to explore.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Are pets welcome?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>We welcome well-behaved dogs by prior arrangement. Please let us know when booking so we can prepare accordingly.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Is there parking available?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>Yes, allocated roadside parking is available directly outside the property.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">What's included in the stay?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>All essentials are provided including fresh linens, towels, toiletries, a fully equipped kitchen with Nespresso coffee machine, kettle, and microwave, Wi-Fi, and smart TV.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">How do I get to The Old Chapel?<span class="faq-icon">+</span></button>
+        <div class="faq-answer"><p>The Old Chapel is located in the village of Feniton, East Devon. It's easily accessible from the A30 and just 15 minutes from Honiton. Full directions and access instructions are sent with your booking confirmation.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="map-section" id="location">
+    <div class="section-header">
+      <p class="section-eyebrow">Find Us</p>
+      <h2 class="section-title">Location</h2>
+    </div>
+    <div class="map-container">
+      <div class="map-embed">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2536.5!2d-3.2862!3d50.7827!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sFeniton%2C+Devon!5e0!3m2!1sen!2suk!4v1" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">The Old Chapel</div>
+        <div class="footer-address">Feniton, Devon<br>Theoldchapeldevon&#64;gmail.com</div>
+      </div>
+      <div class="footer-links">
+        <a href="#home">Home</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#booking">Book</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </div>
+    <div class="footer-bottom">&copy; 2026 The Old Chapel, Feniton. All rights reserved.</div>
+  </footer>
+
+  <script>
+    var nav = document.getElementById("navbar");
+    window.addEventListener("scroll", function() {
+      if (window.scrollY > 80) { nav.classList.add("scrolled"); }
+      else { nav.classList.remove("scrolled"); }
+    });
+
+    var track = document.getElementById("galleryTrack");
+    var allSlides = track.querySelectorAll(".gallery-slide");
+    var dotsBox = document.getElementById("galleryDots");
+    var counterEl = document.getElementById("galleryCounter");
+    var cur = 0;
+    var timer = null;
+    var total = allSlides.length;
+
+    for (var i = 0; i < total; i++) {
+      var dot = document.createElement("button");
+      dot.className = "gallery-dot" + (i === 0 ? " active" : "");
+      dot.setAttribute("data-idx", i);
+      dot.addEventListener("click", function() { go(parseInt(this.getAttribute("data-idx"))); });
+      dotsBox.appendChild(dot);
+    }
+
+    function go(idx) {
+      cur = idx;
+      track.style.transform = "translateX(-" + (idx * 100) + "%)";
+      counterEl.textContent = (idx + 1) + " of " + total;
+      var dots = dotsBox.querySelectorAll(".gallery-dot");
+      for (var j = 0; j < dots.length; j++) {
+        dots[j].className = j === idx ? "gallery-dot active" : "gallery-dot";
+      }
+      startTimer();
+    }
+
+    function startTimer() {
+      if (timer) clearInterval(timer);
+      timer = setInterval(function() {
+        go(cur < total - 1 ? cur + 1 : 0);
+      }, 3000);
+    }
+
+    document.getElementById("prevBtn").addEventListener("click", function() {
+      go(cur > 0 ? cur - 1 : total - 1);
+    });
+    document.getElementById("nextBtn").addEventListener("click", function() {
+      go(cur < total - 1 ? cur + 1 : 0);
+    });
+
+    var touchX = 0;
+    var vp = document.querySelector(".gallery-viewport");
+    vp.addEventListener("touchstart", function(e) { touchX = e.touches[0].clientX; }, {passive:true});
+    vp.addEventListener("touchend", function(e) {
+      var diff = touchX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) go(cur < total - 1 ? cur + 1 : 0);
+        else go(cur > 0 ? cur - 1 : total - 1);
+      }
+    }, {passive:true});
+
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "ArrowLeft") go(cur > 0 ? cur - 1 : total - 1);
+      if (e.key === "ArrowRight") go(cur < total - 1 ? cur + 1 : 0);
+    });
+
+    startTimer();
+
+    var faqBtns = document.querySelectorAll(".faq-question");
+    for (var k = 0; k < faqBtns.length; k++) {
+      faqBtns[k].addEventListener("click", function() {
+        var item = this.parentElement;
+        var wasOpen = item.classList.contains("open");
+        var allItems = document.querySelectorAll(".faq-item");
+        for (var m = 0; m < allItems.length; m++) allItems[m].classList.remove("open");
+        if (!wasOpen) item.classList.add("open");
+      });
+    }
+
+    document.querySelectorAll("a[href^=\"#\"]").forEach(function(link) {
+      link.addEventListener("click", function(e) {
+        e.preventDefault();
+        var target = document.querySelector(this.getAttribute("href"));
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+
+    </script>
+
+</body>
+</html>
