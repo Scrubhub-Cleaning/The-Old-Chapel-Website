@@ -51,6 +51,7 @@
     .nav-logo {
       font-family: var(--serif); font-size: 1.4rem; font-weight: 400;
       letter-spacing: 0.08em; color: white; text-transform: uppercase;
+      white-space: nowrap;
     }
     .nav-right { display: flex; align-items: center; gap: 2rem; }
     .nav-links { display: flex; gap: 2.2rem; list-style: none; }
@@ -335,11 +336,14 @@
       .nav-links { display: none; }
     }
     @media (max-width: 768px) {
-      nav { padding: 1rem 1.4rem; }
-      nav.scrolled { padding: 0.8rem 1.4rem; }
-      .nav-right { gap: 0.8rem; }
+      nav { padding: 1rem 1.1rem; }
+      nav.scrolled { padding: 0.8rem 1.1rem; }
+      .nav-logo { font-size: 1.05rem; letter-spacing: 0.05em; }
+      .nav-right { gap: 0.5rem; }
       .nav-book-btn { display: none; }
-      .nav-contact a { width: 36px; height: 36px; }
+      .nav-contact { gap: 0.4rem; }
+      .nav-contact a { width: 34px; height: 34px; }
+      .nav-contact svg { width: 15px; height: 15px; }
       .review-card { width: 290px; padding: 1.8rem; }
       .gallery-slider { padding: 0 1rem; }
       .gallery-section, .booking-section, .faq-section { padding: 5rem 0; }
